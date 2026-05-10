@@ -1,0 +1,510 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Ossus H₂ Operations Dashboard</title>
+
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+  <style>
+    *{
+      margin:0;
+      padding:0;
+      box-sizing:border-box;
+      font-family:Inter,system-ui,sans-serif;
+    }
+
+    body{
+      background:#f5f7fa;
+      color:#1b1f24;
+    }
+
+    .container{
+      width:95%;
+      max-width:1400px;
+      margin:auto;
+      padding:24px 0 60px;
+    }
+
+    .topbar{
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      margin-bottom:24px;
+    }
+
+    .title{
+      font-size:28px;
+      font-weight:700;
+    }
+
+    .subtitle{
+      color:#667085;
+      margin-top:4px;
+    }
+
+    .sync-status{
+      background:white;
+      padding:10px 14px;
+      border-radius:12px;
+      box-shadow:0 2px 8px rgba(0,0,0,0.06);
+      font-size:14px;
+    }
+
+    .grid{
+      display:grid;
+      grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+      gap:16px;
+      margin-bottom:24px;
+    }
+
+    .card{
+      background:white;
+      border-radius:18px;
+      padding:20px;
+      box-shadow:0 2px 10px rgba(0,0,0,0.05);
+    }
+
+    .metric-label{
+      color:#667085;
+      font-size:14px;
+      margin-bottom:10px;
+    }
+
+    .metric-value{
+      font-size:34px;
+      font-weight:700;
+    }
+
+    .green{
+      color:#13a463;
+    }
+
+    .blue{
+      color:#2065d1;
+    }
+
+    .amber{
+      color:#d97706;
+    }
+
+    .section{
+      background:white;
+      border-radius:18px;
+      padding:24px;
+      margin-bottom:24px;
+      box-shadow:0 2px 10px rgba(0,0,0,0.05);
+    }
+
+    .section-title{
+      font-size:20px;
+      margin-bottom:20px;
+      font-weight:700;
+    }
+
+    .form-grid{
+      display:grid;
+      grid-template-columns:repeat(auto-fit,minmax(200px,1fr));
+      gap:16px;
+    }
+
+    .form-group{
+      display:flex;
+      flex-direction:column;
+    }
+
+    label{
+      margin-bottom:8px;
+      font-size:13px;
+      color:#667085;
+      font-weight:600;
+    }
+
+    input, select{
+      padding:12px;
+      border:1px solid #d0d5dd;
+      border-radius:10px;
+      font-size:14px;
+    }
+
+    button{
+      background:#111827;
+      color:white;
+      border:none;
+      padding:14px 18px;
+      border-radius:12px;
+      cursor:pointer;
+      font-weight:600;
+      margin-top:20px;
+      font-size:15px;
+    }
+
+    button:hover{
+      opacity:0.92;
+    }
+
+    .charts{
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      gap:20px;
+    }
+
+    .chart-card{
+      background:white;
+      border-radius:18px;
+      padding:20px;
+      box-shadow:0 2px 10px rgba(0,0,0,0.05);
+    }
+
+    table{
+      width:100%;
+      border-collapse:collapse;
+      margin-top:20px;
+    }
+
+    th{
+      text-align:left;
+      padding:12px;
+      background:#f9fafb;
+      font-size:13px;
+    }
+
+    td{
+      padding:12px;
+      border-top:1px solid #eaecf0;
+      font-size:14px;
+    }
+
+    @media(max-width:900px){
+      .charts{
+        grid-template-columns:1fr;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+<div class="container">
+
+  <div class="topbar">
+    <div>
+      <div class="title">Ossus H₂ Dashboard</div>
+      <div class="subtitle">Hydrogen + CO₂ Operations Monitoring</div>
+    </div>
+
+    <div class="sync-status" id="syncStatus">
+      Google Sheets: Not Connected
+    </div>
+  </div>
+
+  <!-- KPI -->
+  <div class="grid">
+
+    <div class="card">
+      <div class="metric-label">Today's H₂ Production</div>
+      <div class="metric-value green" id="todayH2">0 L</div>
+    </div>
+
+    <div class="card">
+      <div class="metric-label">Today's CO₂ Production</div>
+      <div class="metric-value blue" id="todayCO2">0 L</div>
+    </div>
+
+    <div class="card">
+      <div class="metric-label">Cumulative H₂</div>
+      <div class="metric-value amber" id="cumH2">0 L</div>
+    </div>
+
+    <div class="card">
+      <div class="metric-label">Average H₂ %</div>
+      <div class="metric-value" id="avgH2">0%</div>
+    </div>
+
+  </div>
+
+  <!-- FORM -->
+  <div class="section">
+
+    <div class="section-title">
+      Log Reactor Data
+    </div>
+
+    <div class="form-grid">
+
+      <div class="form-group">
+        <label>Date</label>
+        <input type="date" id="date">
+      </div>
+
+      <div class="form-group">
+        <label>Site</label>
+        <select id="site">
+          <option>Eternis</option>
+          <option>Sayaji</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label>Reactor</label>
+        <input type="text" id="reactor">
+      </div>
+
+      <div class="form-group">
+        <label>Voltage (V)</label>
+        <input type="number" step="0.01" id="voltage">
+      </div>
+
+      <div class="form-group">
+        <label>Current (A)</label>
+        <input type="number" step="0.01" id="current">
+      </div>
+
+      <div class="form-group">
+        <label>H₂ Produced (L)</label>
+        <input type="number" step="0.01" id="h2">
+      </div>
+
+      <div class="form-group">
+        <label>CO₂ Produced (L)</label>
+        <input type="number" step="0.01" id="co2">
+      </div>
+
+      <div class="form-group">
+        <label>H₂ %</label>
+        <input type="number" step="0.01" id="h2pct">
+      </div>
+
+      <div class="form-group">
+        <label>pH</label>
+        <input type="number" step="0.01" id="ph">
+      </div>
+
+      <div class="form-group">
+        <label>Conductivity (mS/cm)</label>
+        <input type="number" step="0.01" id="cond">
+      </div>
+
+    </div>
+
+    <button onclick="saveData()">
+      Save Run
+    </button>
+
+  </div>
+
+  <!-- CHARTS -->
+  <div class="charts">
+
+    <div class="chart-card">
+      <canvas id="h2Chart"></canvas>
+    </div>
+
+    <div class="chart-card">
+      <canvas id="gasChart"></canvas>
+    </div>
+
+  </div>
+
+  <!-- TABLE -->
+  <div class="section">
+
+    <div class="section-title">
+      Recent Runs
+    </div>
+
+    <table>
+
+      <thead>
+        <tr>
+          <th>Date</th>
+          <th>Site</th>
+          <th>Reactor</th>
+          <th>Voltage</th>
+          <th>Current</th>
+          <th>H₂</th>
+          <th>CO₂</th>
+        </tr>
+      </thead>
+
+      <tbody id="tableBody"></tbody>
+
+    </table>
+
+  </div>
+
+</div>
+
+<script>
+
+const SCRIPT_URL = "PASTE_YOUR_GOOGLE_SCRIPT_URL_HERE";
+
+let allData = [];
+
+document.getElementById("date").value =
+new Date().toISOString().split("T")[0];
+
+async function loadData(){
+
+  try{
+
+    const response = await fetch(SCRIPT_URL);
+    const data = await response.json();
+
+    allData = data;
+
+    updateDashboard();
+
+    document.getElementById("syncStatus").innerHTML =
+    "✅ Google Sheets Connected";
+
+  }catch(err){
+
+    console.error(err);
+
+    document.getElementById("syncStatus").innerHTML =
+    "❌ Connection Failed";
+  }
+}
+
+async function saveData(){
+
+  const payload = {
+
+    date: document.getElementById("date").value,
+    site: document.getElementById("site").value,
+    reactor: document.getElementById("reactor").value,
+    voltage: document.getElementById("voltage").value,
+    current: document.getElementById("current").value,
+    h2: document.getElementById("h2").value,
+    co2: document.getElementById("co2").value,
+    h2pct: document.getElementById("h2pct").value,
+    ph: document.getElementById("ph").value,
+    cond: document.getElementById("cond").value
+
+  };
+
+  await fetch(SCRIPT_URL, {
+
+    method:"POST",
+    body: JSON.stringify(payload)
+
+  });
+
+  alert("Saved");
+
+  loadData();
+}
+
+function updateDashboard(){
+
+  renderTable();
+  renderKPIs();
+  renderCharts();
+}
+
+function renderKPIs(){
+
+  let totalH2 = 0;
+  let totalCO2 = 0;
+  let totalPct = 0;
+
+  allData.forEach(d => {
+
+    totalH2 += Number(d.h2 || 0);
+    totalCO2 += Number(d.co2 || 0);
+    totalPct += Number(d.h2pct || 0);
+
+  });
+
+  document.getElementById("cumH2").innerHTML =
+  totalH2.toFixed(1) + " L";
+
+  document.getElementById("todayH2").innerHTML =
+  totalH2.toFixed(1) + " L";
+
+  document.getElementById("todayCO2").innerHTML =
+  totalCO2.toFixed(1) + " L";
+
+  document.getElementById("avgH2").innerHTML =
+  (totalPct / allData.length || 0).toFixed(1) + "%";
+}
+
+function renderTable(){
+
+  const tbody = document.getElementById("tableBody");
+
+  tbody.innerHTML = "";
+
+  allData.reverse().forEach(d => {
+
+    tbody.innerHTML += `
+      <tr>
+        <td>${d.date}</td>
+        <td>${d.site}</td>
+        <td>${d.reactor}</td>
+        <td>${d.voltage}</td>
+        <td>${d.current}</td>
+        <td>${d.h2}</td>
+        <td>${d.co2}</td>
+      </tr>
+    `;
+  });
+}
+
+let h2Chart;
+let gasChart;
+
+function renderCharts(){
+
+  const labels = allData.map(d => d.date);
+
+  const h2Values = allData.map(d => Number(d.h2));
+  const co2Values = allData.map(d => Number(d.co2));
+
+  if(h2Chart) h2Chart.destroy();
+
+  h2Chart = new Chart(
+    document.getElementById("h2Chart"),
+    {
+      type:"line",
+      data:{
+        labels,
+        datasets:[{
+          label:"H₂ Production (L)",
+          data:h2Values
+        }]
+      }
+    }
+  );
+
+  if(gasChart) gasChart.destroy();
+
+  gasChart = new Chart(
+    document.getElementById("gasChart"),
+    {
+      type:"bar",
+      data:{
+        labels,
+        datasets:[
+          {
+            label:"H₂",
+            data:h2Values
+          },
+          {
+            label:"CO₂",
+            data:co2Values
+          }
+        ]
+      }
+    }
+  );
+}
+
+loadData();
+
+</script>
+
+</body>
+</html>
