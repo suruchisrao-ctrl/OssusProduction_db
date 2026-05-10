@@ -1,6 +1,8 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
+
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
@@ -34,7 +36,7 @@ body{
   display:flex;
   justify-content:space-between;
   align-items:center;
-  margin-bottom:30px;
+  margin-bottom:28px;
   flex-wrap:wrap;
   gap:16px;
 }
@@ -52,9 +54,9 @@ body{
 
 .sync{
   background:#111827;
+  border:1px solid rgba(255,255,255,0.08);
   padding:12px 18px;
   border-radius:16px;
-  border:1px solid rgba(255,255,255,0.08);
   font-weight:700;
 }
 
@@ -75,19 +77,18 @@ body{
   border:1px solid rgba(255,255,255,0.08);
 
   box-shadow:
-    0 0 35px rgba(59,130,246,0.15);
+    0 0 35px rgba(59,130,246,0.12);
 }
 
 .hero-title{
   font-size:30px;
   font-weight:900;
-  margin-bottom:10px;
+  margin-bottom:12px;
 }
 
 .hero-text{
   color:#dbeafe;
   line-height:1.6;
-  max-width:900px;
 }
 
 .kpis{
@@ -192,8 +193,8 @@ label{
 
 input,select{
   background:#020617;
-  color:white;
   border:1px solid #334155;
+  color:white;
   padding:14px;
   border-radius:14px;
   font-size:14px;
@@ -253,9 +254,9 @@ table{
 th{
   text-align:left;
   padding:14px;
+  background:#020617;
   color:#94a3b8;
   font-size:12px;
-  background:#020617;
 }
 
 td{
@@ -281,6 +282,7 @@ tr:hover{
 }
 
 </style>
+
 </head>
 
 <body>
@@ -307,6 +309,8 @@ tr:hover{
 
   </div>
 
+  <!-- HERO -->
+
   <div class="hero">
 
     <div class="hero-title">
@@ -314,7 +318,7 @@ tr:hover{
     </div>
 
     <div class="hero-text" id="heroText">
-      Monitoring operating mode effectiveness and hydrogen stability.
+      Monitoring operating mode effectiveness and hydrogen stability across timepoints.
     </div>
 
   </div>
@@ -324,6 +328,7 @@ tr:hover{
   <div class="kpis">
 
     <div class="kpi">
+
       <div class="kpi-label">
         Current Stability
       </div>
@@ -331,19 +336,23 @@ tr:hover{
       <div class="kpi-value green" id="stability">
         Stable
       </div>
+
     </div>
 
     <div class="kpi">
+
       <div class="kpi-label">
-        Avg Interval H₂
+        Avg H₂ / Timepoint
       </div>
 
       <div class="kpi-value cyan" id="avgH2">
         0L
       </div>
+
     </div>
 
     <div class="kpi">
+
       <div class="kpi-label">
         Best Operating Mode
       </div>
@@ -351,9 +360,11 @@ tr:hover{
       <div class="kpi-value orange" id="bestMode">
         —
       </div>
+
     </div>
 
     <div class="kpi">
+
       <div class="kpi-label">
         Active Timepoint
       </div>
@@ -361,6 +372,7 @@ tr:hover{
       <div class="kpi-value purple" id="activeTP">
         T0
       </div>
+
     </div>
 
   </div>
@@ -370,7 +382,7 @@ tr:hover{
   <div class="section">
 
     <div class="section-title">
-      Incremental Production Timeline
+      Incremental H₂ Production Timeline
     </div>
 
     <div class="timeline" id="timeline"></div>
@@ -394,10 +406,14 @@ tr:hover{
 
       <div class="form-group">
         <label>Site</label>
+
         <select id="site" onchange="updateModes()">
+
           <option value="Sayaji">Sayaji</option>
           <option value="Eternis">Eternis</option>
+
         </select>
+
       </div>
 
       <div class="form-group">
@@ -411,47 +427,47 @@ tr:hover{
       </div>
 
       <div class="form-group">
+
         <label>Timepoint</label>
+
         <select id="timepoint">
 
-  <option>T0</option>
-  <option>T1</option>
-  <option>T2</option>
-  <option>T3</option>
-  <option>T4</option>
-  <option>T5</option>
-  <option>T6</option>
-  <option>T7</option>
-  <option>T8</option>
-  <option>T9</option>
-  <option>T10</option>
-  <option>T11</option>
-  <option>T12</option>
-  <option>T13</option>
-  <option>T14</option>
-  <option>T15</option>
-  <option>T16</option>
-  <option>T17</option>
-  <option>T18</option>
-  <option>T19</option>
-  <option>T20</option>
-  <option>T21</option>
-  <option>T22</option>
-  <option>T23</option>
-  <option>T24</option>
-  <option>T25</option>
-  <option>T26</option>
-  <option>T27</option>
-  <option>T28</option>
-  <option>T29</option>
-  <option>T30</option>
+          <option value="T0">T0</option>
+          <option value="T1">T1</option>
+          <option value="T2">T2</option>
+          <option value="T3">T3</option>
+          <option value="T4">T4</option>
+          <option value="T5">T5</option>
+          <option value="T6">T6</option>
+          <option value="T7">T7</option>
+          <option value="T8">T8</option>
+          <option value="T9">T9</option>
+          <option value="T10">T10</option>
+          <option value="T11">T11</option>
+          <option value="T12">T12</option>
+          <option value="T13">T13</option>
+          <option value="T14">T14</option>
+          <option value="T15">T15</option>
+          <option value="T16">T16</option>
+          <option value="T17">T17</option>
+          <option value="T18">T18</option>
+          <option value="T19">T19</option>
+          <option value="T20">T20</option>
+          <option value="T21">T21</option>
+          <option value="T22">T22</option>
+          <option value="T23">T23</option>
+          <option value="T24">T24</option>
 
-</select>
+        </select>
+
       </div>
 
       <div class="form-group">
+
         <label>Operating Mode</label>
+
         <select id="mode"></select>
+
       </div>
 
       <div class="form-group">
@@ -541,12 +557,14 @@ tr:hover{
       <thead>
 
         <tr>
+
           <th>TP</th>
           <th>Total Gas</th>
           <th>Interval Gas</th>
           <th>H₂ Vol</th>
           <th>CO₂ Vol</th>
           <th>Mode</th>
+
         </tr>
 
       </thead>
@@ -584,8 +602,6 @@ let allData = [];
 document.getElementById("date").value =
 new Date().toISOString().split("T")[0];
 
-const tpSelect =
-
 function updateModes(){
 
   const site =
@@ -606,6 +622,14 @@ function updateModes(){
 }
 
 updateModes();
+
+function tpNum(tp){
+
+  return Number(
+    String(tp).replace("T","")
+  );
+
+}
 
 async function loadData(){
 
@@ -631,36 +655,31 @@ async function loadData(){
 
 }
 
-function tpNum(tp){
-
-  return Number(
-    String(tp).replace("T","")
-  );
-
-}
-
 async function saveData(){
 
   const date =
   document.getElementById("date").value;
 
-  const day =
-  document.getElementById("day").value;
-
   const reactor =
   document.getElementById("reactor").value;
 
-  const tp =
-  document.getElementById("timepoint").value;
+  const day =
+  document.getElementById("day").value;
 
   const totalGas =
-  Number(document.getElementById("totalgas").value);
+  Number(
+    document.getElementById("totalgas").value
+  );
 
   const h2pct =
-  Number(document.getElementById("h2pct").value);
+  Number(
+    document.getElementById("h2pct").value
+  );
 
   const co2pct =
-  Number(document.getElementById("co2pct").value);
+  Number(
+    document.getElementById("co2pct").value
+  );
 
   const runId =
   `${date}_D${day}_${reactor}`;
@@ -701,7 +720,7 @@ async function saveData(){
     site: document.getElementById("site").value,
     reactor: reactor,
     day: day,
-    timepoint: tp,
+    timepoint: document.getElementById("timepoint").value,
     mode: document.getElementById("mode").value,
     voltage: document.getElementById("voltage").value,
     current: document.getElementById("current").value,
@@ -725,7 +744,7 @@ async function saveData(){
   });
 
   alert(
-    `Interval Gas: ${intervalGas.toFixed(2)}L\nH₂: ${h2vol.toFixed(2)}L\nCO₂: ${co2vol.toFixed(2)}L`
+    `Saved\n\nInterval Gas: ${intervalGas.toFixed(2)}L\nH₂: ${h2vol.toFixed(2)}L\nCO₂: ${co2vol.toFixed(2)}L`
   );
 
   loadData();
@@ -759,39 +778,8 @@ function renderKPIs(){
   document.getElementById("avgH2").innerHTML =
   avg.toFixed(1) + "L";
 
-  const grouped = {};
-
-  allData.forEach(d => {
-
-    if(!grouped[d.mode])
-      grouped[d.mode] = [];
-
-    grouped[d.mode].push(
-      Number(d.h2vol || 0)
-    );
-
-  });
-
-  let bestMode = "";
-  let bestAvg = 0;
-
-  Object.keys(grouped).forEach(mode => {
-
-    const avg =
-    grouped[mode].reduce((a,b)=>a+b,0)
-    / grouped[mode].length;
-
-    if(avg > bestAvg){
-
-      bestAvg = avg;
-      bestMode = mode;
-
-    }
-
-  });
-
   document.getElementById("bestMode").innerHTML =
-  bestMode || "—";
+  latest.mode || "—";
 
 }
 
@@ -842,7 +830,7 @@ function renderCharts(){
   const labels =
   sorted.map(d => d.timepoint);
 
-  const h2 =
+  const values =
   sorted.map(d =>
     Number(d.h2vol || 0)
   );
@@ -866,7 +854,7 @@ function renderCharts(){
 
           label:"H₂ Volume",
 
-          data:h2,
+          data:values,
 
           borderWidth:4,
 
@@ -875,34 +863,6 @@ function renderCharts(){
           fill:true
 
         }]
-
-      },
-
-      options:{
-
-        plugins:{
-          legend:{
-            labels:{
-              color:"white"
-            }
-          }
-        },
-
-        scales:{
-
-          x:{
-            ticks:{
-              color:"#94a3b8"
-            }
-          },
-
-          y:{
-            ticks:{
-              color:"#94a3b8"
-            }
-          }
-
-        }
 
       }
 
@@ -929,4 +889,78 @@ function renderCharts(){
   const values2 =
   labels2.map(m => {
 
-    const
+    const arr =
+    grouped[m];
+
+    return arr.reduce((a,b)=>a+b,0)
+    / arr.length;
+
+  });
+
+  if(modeChart)
+    modeChart.destroy();
+
+  modeChart = new Chart(
+
+    document.getElementById("modeChart"),
+
+    {
+
+      type:"bar",
+
+      data:{
+
+        labels:labels2,
+
+        datasets:[{
+
+          label:"Avg H₂",
+
+          data:values2
+
+        }]
+
+      }
+
+    }
+
+  );
+
+}
+
+function renderTable(){
+
+  const tbody =
+  document.getElementById("tableBody");
+
+  tbody.innerHTML = "";
+
+  [...allData]
+    .reverse()
+    .forEach(d => {
+
+      tbody.innerHTML += `
+
+        <tr>
+
+          <td>${d.timepoint || "-"}</td>
+          <td>${d.totalgas || "-"}</td>
+          <td>${d.intervalgas || "-"}</td>
+          <td class="good">${d.h2vol || "-"}</td>
+          <td>${d.co2vol || "-"}</td>
+          <td>${d.mode || "-"}</td>
+
+        </tr>
+
+      `;
+
+    });
+
+}
+
+loadData();
+
+</script>
+
+</body>
+</html>
