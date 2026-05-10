@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Ossus Production Stability Command Center</title>
+<title>Ossus Stability Command Center</title>
 
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
@@ -21,12 +21,11 @@ body{
   background:
     radial-gradient(circle at top left,#0f172a,#020617 70%);
   color:white;
-  overflow-x:hidden;
 }
 
 .container{
   width:95%;
-  max-width:1550px;
+  max-width:1600px;
   margin:auto;
   padding:24px 0 60px;
 }
@@ -35,7 +34,7 @@ body{
   display:flex;
   justify-content:space-between;
   align-items:center;
-  margin-bottom:28px;
+  margin-bottom:30px;
   flex-wrap:wrap;
   gap:16px;
 }
@@ -49,15 +48,13 @@ body{
 .subtitle{
   color:#94a3b8;
   margin-top:6px;
-  font-size:15px;
 }
 
 .sync{
-  background:rgba(15,23,42,0.9);
-  border:1px solid rgba(255,255,255,0.08);
+  background:#111827;
   padding:12px 18px;
   border-radius:16px;
-  backdrop-filter:blur(10px);
+  border:1px solid rgba(255,255,255,0.08);
   font-weight:700;
 }
 
@@ -69,39 +66,26 @@ body{
       rgba(124,58,237,0.12)
     );
 
-  border:1px solid rgba(255,255,255,0.08);
+  border-radius:28px;
 
   padding:32px;
-  border-radius:30px;
 
   margin-bottom:28px;
 
+  border:1px solid rgba(255,255,255,0.08);
+
   box-shadow:
-    0 0 40px rgba(59,130,246,0.12);
-
-  position:relative;
-  overflow:hidden;
-}
-
-.hero::before{
-  content:"";
-  position:absolute;
-  inset:0;
-  background:
-    radial-gradient(circle at top right,
-    rgba(56,189,248,0.12),
-    transparent 40%);
+    0 0 35px rgba(59,130,246,0.15);
 }
 
 .hero-title{
-  font-size:28px;
+  font-size:30px;
   font-weight:900;
   margin-bottom:10px;
 }
 
-.hero-status{
-  font-size:18px;
-  color:#d1fae5;
+.hero-text{
+  color:#dbeafe;
   line-height:1.6;
   max-width:900px;
 }
@@ -114,29 +98,21 @@ body{
 }
 
 .kpi{
-  background:rgba(15,23,42,0.8);
-
-  border:1px solid rgba(255,255,255,0.08);
-
+  background:#111827;
   border-radius:24px;
-
   padding:24px;
-
-  backdrop-filter:blur(12px);
-
-  box-shadow:
-    0 0 18px rgba(0,0,0,0.25);
+  border:1px solid rgba(255,255,255,0.08);
 }
 
 .kpi-label{
   color:#94a3b8;
   font-size:13px;
-  margin-bottom:12px;
+  margin-bottom:10px;
   font-weight:700;
 }
 
 .kpi-value{
-  font-size:42px;
+  font-size:40px;
   font-weight:900;
 }
 
@@ -157,17 +133,11 @@ body{
 }
 
 .section{
-  background:rgba(15,23,42,0.82);
-
-  border:1px solid rgba(255,255,255,0.08);
-
+  background:#111827;
   border-radius:28px;
-
   padding:28px;
-
   margin-bottom:28px;
-
-  backdrop-filter:blur(14px);
+  border:1px solid rgba(255,255,255,0.08);
 }
 
 .section-title{
@@ -178,44 +148,33 @@ body{
 
 .timeline{
   display:flex;
-  gap:10px;
+  gap:12px;
   overflow-x:auto;
-  padding-bottom:10px;
 }
 
-.tp{
-  min-width:85px;
-  padding:14px;
-  border-radius:18px;
-  text-align:center;
-  background:#111827;
+.tp-card{
+  min-width:120px;
+  background:#020617;
+  border-radius:20px;
+  padding:18px;
   border:1px solid rgba(255,255,255,0.08);
 }
 
 .tp-label{
-  font-size:14px;
-  font-weight:800;
-  margin-bottom:8px;
+  color:#94a3b8;
+  font-size:13px;
+  margin-bottom:10px;
 }
 
 .tp-value{
-  font-size:20px;
+  font-size:24px;
   font-weight:900;
-}
-
-.tp.stable{
-  border-color:#22c55e;
-  box-shadow:0 0 16px rgba(34,197,94,0.25);
-}
-
-.tp.warn{
-  border-color:#f59e0b;
-  box-shadow:0 0 16px rgba(245,158,11,0.22);
+  color:#22c55e;
 }
 
 .form-grid{
   display:grid;
-  grid-template-columns:repeat(auto-fit,minmax(210px,1fr));
+  grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
   gap:18px;
 }
 
@@ -233,8 +192,8 @@ label{
 
 input,select{
   background:#020617;
-  border:1px solid #334155;
   color:white;
+  border:1px solid #334155;
   padding:14px;
   border-radius:14px;
   font-size:14px;
@@ -243,8 +202,6 @@ input,select{
 input:focus,select:focus{
   outline:none;
   border-color:#38bdf8;
-  box-shadow:
-    0 0 0 3px rgba(56,189,248,0.18);
 }
 
 button{
@@ -266,13 +223,6 @@ button{
   cursor:pointer;
 
   font-size:15px;
-
-  box-shadow:
-    0 0 18px rgba(59,130,246,0.22);
-}
-
-button:hover{
-  transform:translateY(-1px);
 }
 
 .charts{
@@ -283,68 +233,38 @@ button:hover{
 }
 
 .chart-card{
-  background:rgba(15,23,42,0.82);
-
-  border:1px solid rgba(255,255,255,0.08);
-
+  background:#111827;
   border-radius:28px;
-
   padding:24px;
+  border:1px solid rgba(255,255,255,0.08);
 }
 
 .chart-title{
   font-size:18px;
-  font-weight:800;
+  font-weight:900;
   margin-bottom:18px;
-}
-
-.mode-grid{
-  display:grid;
-  grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
-  gap:16px;
-}
-
-.mode-card{
-  background:#111827;
-  border-radius:20px;
-  padding:20px;
-  border:1px solid rgba(255,255,255,0.08);
-}
-
-.mode-name{
-  font-size:16px;
-  font-weight:900;
-  margin-bottom:10px;
-}
-
-.mode-stat{
-  color:#22c55e;
-  font-size:28px;
-  font-weight:900;
 }
 
 table{
   width:100%;
   border-collapse:collapse;
-  margin-top:18px;
 }
 
 th{
   text-align:left;
   padding:14px;
   color:#94a3b8;
-  background:#020617;
   font-size:12px;
+  background:#020617;
 }
 
 td{
   padding:14px;
   border-top:1px solid rgba(255,255,255,0.06);
-  font-size:14px;
 }
 
 tr:hover{
-  background:#111827;
+  background:#1e293b;
 }
 
 .good{
@@ -376,7 +296,7 @@ tr:hover{
       </div>
 
       <div class="subtitle">
-        Adaptive hydrogen production monitoring under changing influent quality
+        Adaptive hydrogen production monitoring
       </div>
 
     </div>
@@ -387,16 +307,14 @@ tr:hover{
 
   </div>
 
-  <!-- HERO -->
-
   <div class="hero">
 
     <div class="hero-title">
       Production Stability Status
     </div>
 
-    <div class="hero-status" id="heroText">
-      Monitoring operating mode effectiveness and hydrogen stability across timepoints.
+    <div class="hero-text" id="heroText">
+      Monitoring operating mode effectiveness and hydrogen stability.
     </div>
 
   </div>
@@ -417,11 +335,11 @@ tr:hover{
 
     <div class="kpi">
       <div class="kpi-label">
-        Avg H₂ Production
+        Avg Interval H₂
       </div>
 
       <div class="kpi-value cyan" id="avgH2">
-        0 L
+        0L
       </div>
     </div>
 
@@ -452,7 +370,7 @@ tr:hover{
   <div class="section">
 
     <div class="section-title">
-      Timepoint Stability Timeline
+      Incremental Production Timeline
     </div>
 
     <div class="timeline" id="timeline"></div>
@@ -484,7 +402,7 @@ tr:hover{
 
       <div class="form-group">
         <label>Reactor</label>
-        <input type="text" id="reactor" placeholder="T20A">
+        <input type="text" id="reactor">
       </div>
 
       <div class="form-group">
@@ -513,18 +431,23 @@ tr:hover{
       </div>
 
       <div class="form-group">
-        <label>H₂ Production (L)</label>
-        <input type="number" step="0.01" id="h2">
+        <label>Trigger</label>
+        <input type="number" id="trigger">
       </div>
 
       <div class="form-group">
-        <label>CO₂ Production (L)</label>
-        <input type="number" step="0.01" id="co2">
+        <label>Total Gas Produced (L)</label>
+        <input type="number" step="0.001" id="totalgas">
       </div>
 
       <div class="form-group">
         <label>H₂ %</label>
-        <input type="number" step="0.01" id="h2pct">
+        <input type="number" step="0.001" id="h2pct">
+      </div>
+
+      <div class="form-group">
+        <label>CO₂ %</label>
+        <input type="number" step="0.001" id="co2pct">
       </div>
 
       <div class="form-group">
@@ -552,7 +475,7 @@ tr:hover{
     <div class="chart-card">
 
       <div class="chart-title">
-        H₂ Stability Across Timepoints
+        Incremental H₂ Production
       </div>
 
       <canvas id="h2Chart"></canvas>
@@ -571,18 +494,6 @@ tr:hover{
 
   </div>
 
-  <!-- MODES -->
-
-  <div class="section">
-
-    <div class="section-title">
-      Operating Mode Intelligence
-    </div>
-
-    <div class="mode-grid" id="modeGrid"></div>
-
-  </div>
-
   <!-- TABLE -->
 
   <div class="section">
@@ -596,13 +507,12 @@ tr:hover{
       <thead>
 
         <tr>
-          <th>Run ID</th>
           <th>TP</th>
+          <th>Total Gas</th>
+          <th>Interval Gas</th>
+          <th>H₂ Vol</th>
+          <th>CO₂ Vol</th>
           <th>Mode</th>
-          <th>H₂</th>
-          <th>CO₂</th>
-          <th>pH</th>
-          <th>Cond</th>
         </tr>
 
       </thead>
@@ -681,7 +591,7 @@ async function loadData(){
     renderDashboard();
 
     document.getElementById("syncStatus").innerHTML =
-    "✅ Google Sheets Connected";
+    "✅ Connected";
 
   }catch(err){
 
@@ -689,6 +599,14 @@ async function loadData(){
     "❌ Connection Failed";
 
   }
+
+}
+
+function tpNum(tp){
+
+  return Number(
+    String(tp).replace("T","")
+  );
 
 }
 
@@ -703,8 +621,49 @@ async function saveData(){
   const reactor =
   document.getElementById("reactor").value;
 
+  const tp =
+  document.getElementById("timepoint").value;
+
+  const totalGas =
+  Number(document.getElementById("totalgas").value);
+
+  const h2pct =
+  Number(document.getElementById("h2pct").value);
+
+  const co2pct =
+  Number(document.getElementById("co2pct").value);
+
   const runId =
   `${date}_D${day}_${reactor}`;
+
+  const previous =
+  allData
+    .filter(d => d.runid === runId)
+    .sort((a,b)=>
+      tpNum(a.timepoint) -
+      tpNum(b.timepoint)
+    );
+
+  let previousGas = 0;
+
+  if(previous.length > 0){
+
+    previousGas =
+    Number(
+      previous[previous.length - 1]
+      .totalgas || 0
+    );
+
+  }
+
+  const intervalGas =
+  totalGas - previousGas;
+
+  const h2vol =
+  intervalGas * (h2pct / 100);
+
+  const co2vol =
+  intervalGas * (co2pct / 100);
 
   const payload = {
 
@@ -713,13 +672,17 @@ async function saveData(){
     site: document.getElementById("site").value,
     reactor: reactor,
     day: day,
-    timepoint: document.getElementById("timepoint").value,
+    timepoint: tp,
     mode: document.getElementById("mode").value,
     voltage: document.getElementById("voltage").value,
     current: document.getElementById("current").value,
-    h2: document.getElementById("h2").value,
-    co2: document.getElementById("co2").value,
-    h2pct: document.getElementById("h2pct").value,
+    trigger: document.getElementById("trigger").value,
+    totalgas: totalGas,
+    intervalgas: intervalGas.toFixed(3),
+    h2pct: h2pct,
+    co2pct: co2pct,
+    h2vol: h2vol.toFixed(3),
+    co2vol: co2vol.toFixed(3),
     ph: document.getElementById("ph").value,
     cond: document.getElementById("cond").value
 
@@ -732,7 +695,9 @@ async function saveData(){
 
   });
 
-  alert("Timepoint Saved");
+  alert(
+    `Interval Gas: ${intervalGas.toFixed(2)}L\nH₂: ${h2vol.toFixed(2)}L\nCO₂: ${co2vol.toFixed(2)}L`
+  );
 
   loadData();
 
@@ -743,7 +708,6 @@ function renderDashboard(){
   renderKPIs();
   renderTimeline();
   renderCharts();
-  renderModes();
   renderTable();
 
 }
@@ -760,33 +724,33 @@ function renderKPIs(){
 
   const avg =
   allData.reduce((a,b)=>
-    a + Number(b.h2 || 0),0
+    a + Number(b.h2vol || 0),0
   ) / allData.length;
 
   document.getElementById("avgH2").innerHTML =
-  avg.toFixed(1) + " L";
+  avg.toFixed(1) + "L";
 
-  const modeAgg = {};
+  const grouped = {};
 
   allData.forEach(d => {
 
-    if(!modeAgg[d.mode])
-      modeAgg[d.mode] = [];
+    if(!grouped[d.mode])
+      grouped[d.mode] = [];
 
-    modeAgg[d.mode].push(Number(d.h2 || 0));
+    grouped[d.mode].push(
+      Number(d.h2vol || 0)
+    );
 
   });
 
   let bestMode = "";
   let bestAvg = 0;
 
-  Object.keys(modeAgg).forEach(mode => {
-
-    const arr = modeAgg[mode];
+  Object.keys(grouped).forEach(mode => {
 
     const avg =
-    arr.reduce((a,b)=>a+b,0)
-    / arr.length;
+    grouped[mode].reduce((a,b)=>a+b,0)
+    / grouped[mode].length;
 
     if(avg > bestAvg){
 
@@ -800,35 +764,6 @@ function renderKPIs(){
   document.getElementById("bestMode").innerHTML =
   bestMode || "—";
 
-  const variance =
-  Math.abs(avg - Number(latest.h2 || 0));
-
-  if(variance < 10){
-
-    document.getElementById("stability").innerHTML =
-    "Stable";
-
-    document.getElementById("heroText").innerHTML =
-    "Hydrogen production remains stable across recent timepoints despite upstream influent variability.";
-
-  }else{
-
-    document.getElementById("stability").innerHTML =
-    "Drifting";
-
-    document.getElementById("heroText").innerHTML =
-    "Production variability detected. Review operating mode adaptation and influent changes.";
-
-  }
-
-}
-
-function tpNum(tp){
-
-  return Number(
-    String(tp).replace("T","")
-  );
-
 }
 
 function renderTimeline(){
@@ -838,34 +773,29 @@ function renderTimeline(){
 
   wrap.innerHTML = "";
 
-  const sorted =
-  [...allData].sort((a,b)=>
-    tpNum(a.timepoint) -
-    tpNum(b.timepoint)
-  );
+  [...allData]
+    .reverse()
+    .slice(0,12)
+    .reverse()
+    .forEach(d => {
 
-  sorted.slice(-12).forEach(d => {
+      wrap.innerHTML += `
 
-    const stable =
-    Number(d.h2 || 0) > 50;
+        <div class="tp-card">
 
-    wrap.innerHTML += `
+          <div class="tp-label">
+            ${d.timepoint}
+          </div>
 
-      <div class="tp ${stable ? 'stable':'warn'}">
+          <div class="tp-value">
+            ${Number(d.h2vol || 0).toFixed(1)}L
+          </div>
 
-        <div class="tp-label">
-          ${d.timepoint}
         </div>
 
-        <div class="tp-value">
-          ${d.h2 || '-'}
-        </div>
+      `;
 
-      </div>
-
-    `;
-
-  });
+    });
 
 }
 
@@ -884,7 +814,9 @@ function renderCharts(){
   sorted.map(d => d.timepoint);
 
   const h2 =
-  sorted.map(d => Number(d.h2));
+  sorted.map(d =>
+    Number(d.h2vol || 0)
+  );
 
   if(h2Chart)
     h2Chart.destroy();
@@ -903,7 +835,7 @@ function renderCharts(){
 
         datasets:[{
 
-          label:"H₂ Production",
+          label:"H₂ Volume",
 
           data:h2,
 
@@ -949,98 +881,6 @@ function renderCharts(){
 
   );
 
-  const modeAgg = {};
-
-  allData.forEach(d => {
-
-    if(!modeAgg[d.mode])
-      modeAgg[d.mode] = [];
-
-    modeAgg[d.mode].push(
-      Number(d.h2 || 0)
-    );
-
-  });
-
-  const labels2 =
-  Object.keys(modeAgg);
-
-  const values2 =
-  labels2.map(m => {
-
-    const arr = modeAgg[m];
-
-    return arr.reduce((a,b)=>a+b,0)
-    / arr.length;
-
-  });
-
-  if(modeChart)
-    modeChart.destroy();
-
-  modeChart = new Chart(
-
-    document.getElementById("modeChart"),
-
-    {
-
-      type:"bar",
-
-      data:{
-
-        labels:labels2,
-
-        datasets:[{
-
-          label:"Avg H₂ Production",
-
-          data:values2
-
-        }]
-
-      },
-
-      options:{
-
-        plugins:{
-          legend:{
-            labels:{
-              color:"white"
-            }
-          }
-        },
-
-        scales:{
-
-          x:{
-            ticks:{
-              color:"#94a3b8"
-            }
-          },
-
-          y:{
-            ticks:{
-              color:"#94a3b8"
-            }
-          }
-
-        }
-
-      }
-
-    }
-
-  );
-
-}
-
-function renderModes(){
-
-  const grid =
-  document.getElementById("modeGrid");
-
-  grid.innerHTML = "";
-
   const grouped = {};
 
   allData.forEach(d => {
@@ -1048,71 +888,16 @@ function renderModes(){
     if(!grouped[d.mode])
       grouped[d.mode] = [];
 
-    grouped[d.mode].push(Number(d.h2 || 0));
+    grouped[d.mode].push(
+      Number(d.h2vol || 0)
+    );
 
   });
 
-  Object.keys(grouped).forEach(mode => {
+  const labels2 =
+  Object.keys(grouped);
 
-    const arr =
-    grouped[mode];
+  const values2 =
+  labels2.map(m => {
 
-    const avg =
-    arr.reduce((a,b)=>a+b,0)
-    / arr.length;
-
-    grid.innerHTML += `
-
-      <div class="mode-card">
-
-        <div class="mode-name">
-          ${mode}
-        </div>
-
-        <div class="mode-stat">
-          ${avg.toFixed(1)} L
-        </div>
-
-      </div>
-
-    `;
-
-  });
-
-}
-
-function renderTable(){
-
-  const tbody =
-  document.getElementById("tableBody");
-
-  tbody.innerHTML = "";
-
-  [...allData].reverse().forEach(d => {
-
-    tbody.innerHTML += `
-
-      <tr>
-
-        <td>${d.runid || "-"}</td>
-        <td>${d.timepoint || "-"}</td>
-        <td>${d.mode || "-"}</td>
-        <td class="good">${d.h2 || "-"}</td>
-        <td>${d.co2 || "-"}</td>
-        <td>${d.ph || "-"}</td>
-        <td>${d.cond || "-"}</td>
-
-      </tr>
-
-    `;
-
-  });
-
-}
-
-loadData();
-
-</script>
-
-</body>
-</html>
+    const
