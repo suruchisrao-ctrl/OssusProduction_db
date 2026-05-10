@@ -1,0 +1,1118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Ossus Production Stability Command Center</title>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<style>
+
+*{
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
+  font-family:Inter,system-ui,sans-serif;
+}
+
+body{
+  background:
+    radial-gradient(circle at top left,#0f172a,#020617 70%);
+  color:white;
+  overflow-x:hidden;
+}
+
+.container{
+  width:95%;
+  max-width:1550px;
+  margin:auto;
+  padding:24px 0 60px;
+}
+
+.topbar{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  margin-bottom:28px;
+  flex-wrap:wrap;
+  gap:16px;
+}
+
+.title{
+  font-size:42px;
+  font-weight:900;
+  letter-spacing:-2px;
+}
+
+.subtitle{
+  color:#94a3b8;
+  margin-top:6px;
+  font-size:15px;
+}
+
+.sync{
+  background:rgba(15,23,42,0.9);
+  border:1px solid rgba(255,255,255,0.08);
+  padding:12px 18px;
+  border-radius:16px;
+  backdrop-filter:blur(10px);
+  font-weight:700;
+}
+
+.hero{
+  background:
+    linear-gradient(
+      135deg,
+      rgba(37,99,235,0.18),
+      rgba(124,58,237,0.12)
+    );
+
+  border:1px solid rgba(255,255,255,0.08);
+
+  padding:32px;
+  border-radius:30px;
+
+  margin-bottom:28px;
+
+  box-shadow:
+    0 0 40px rgba(59,130,246,0.12);
+
+  position:relative;
+  overflow:hidden;
+}
+
+.hero::before{
+  content:"";
+  position:absolute;
+  inset:0;
+  background:
+    radial-gradient(circle at top right,
+    rgba(56,189,248,0.12),
+    transparent 40%);
+}
+
+.hero-title{
+  font-size:28px;
+  font-weight:900;
+  margin-bottom:10px;
+}
+
+.hero-status{
+  font-size:18px;
+  color:#d1fae5;
+  line-height:1.6;
+  max-width:900px;
+}
+
+.kpis{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+  gap:18px;
+  margin-bottom:28px;
+}
+
+.kpi{
+  background:rgba(15,23,42,0.8);
+
+  border:1px solid rgba(255,255,255,0.08);
+
+  border-radius:24px;
+
+  padding:24px;
+
+  backdrop-filter:blur(12px);
+
+  box-shadow:
+    0 0 18px rgba(0,0,0,0.25);
+}
+
+.kpi-label{
+  color:#94a3b8;
+  font-size:13px;
+  margin-bottom:12px;
+  font-weight:700;
+}
+
+.kpi-value{
+  font-size:42px;
+  font-weight:900;
+}
+
+.green{
+  color:#22c55e;
+}
+
+.cyan{
+  color:#38bdf8;
+}
+
+.orange{
+  color:#f59e0b;
+}
+
+.purple{
+  color:#a855f7;
+}
+
+.section{
+  background:rgba(15,23,42,0.82);
+
+  border:1px solid rgba(255,255,255,0.08);
+
+  border-radius:28px;
+
+  padding:28px;
+
+  margin-bottom:28px;
+
+  backdrop-filter:blur(14px);
+}
+
+.section-title{
+  font-size:24px;
+  font-weight:900;
+  margin-bottom:24px;
+}
+
+.timeline{
+  display:flex;
+  gap:10px;
+  overflow-x:auto;
+  padding-bottom:10px;
+}
+
+.tp{
+  min-width:85px;
+  padding:14px;
+  border-radius:18px;
+  text-align:center;
+  background:#111827;
+  border:1px solid rgba(255,255,255,0.08);
+}
+
+.tp-label{
+  font-size:14px;
+  font-weight:800;
+  margin-bottom:8px;
+}
+
+.tp-value{
+  font-size:20px;
+  font-weight:900;
+}
+
+.tp.stable{
+  border-color:#22c55e;
+  box-shadow:0 0 16px rgba(34,197,94,0.25);
+}
+
+.tp.warn{
+  border-color:#f59e0b;
+  box-shadow:0 0 16px rgba(245,158,11,0.22);
+}
+
+.form-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(210px,1fr));
+  gap:18px;
+}
+
+.form-group{
+  display:flex;
+  flex-direction:column;
+}
+
+label{
+  margin-bottom:8px;
+  color:#94a3b8;
+  font-size:13px;
+  font-weight:700;
+}
+
+input,select{
+  background:#020617;
+  border:1px solid #334155;
+  color:white;
+  padding:14px;
+  border-radius:14px;
+  font-size:14px;
+}
+
+input:focus,select:focus{
+  outline:none;
+  border-color:#38bdf8;
+  box-shadow:
+    0 0 0 3px rgba(56,189,248,0.18);
+}
+
+button{
+  margin-top:24px;
+
+  background:
+    linear-gradient(135deg,#2563eb,#7c3aed);
+
+  color:white;
+
+  border:none;
+
+  padding:16px 22px;
+
+  border-radius:16px;
+
+  font-weight:900;
+
+  cursor:pointer;
+
+  font-size:15px;
+
+  box-shadow:
+    0 0 18px rgba(59,130,246,0.22);
+}
+
+button:hover{
+  transform:translateY(-1px);
+}
+
+.charts{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:22px;
+  margin-bottom:28px;
+}
+
+.chart-card{
+  background:rgba(15,23,42,0.82);
+
+  border:1px solid rgba(255,255,255,0.08);
+
+  border-radius:28px;
+
+  padding:24px;
+}
+
+.chart-title{
+  font-size:18px;
+  font-weight:800;
+  margin-bottom:18px;
+}
+
+.mode-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+  gap:16px;
+}
+
+.mode-card{
+  background:#111827;
+  border-radius:20px;
+  padding:20px;
+  border:1px solid rgba(255,255,255,0.08);
+}
+
+.mode-name{
+  font-size:16px;
+  font-weight:900;
+  margin-bottom:10px;
+}
+
+.mode-stat{
+  color:#22c55e;
+  font-size:28px;
+  font-weight:900;
+}
+
+table{
+  width:100%;
+  border-collapse:collapse;
+  margin-top:18px;
+}
+
+th{
+  text-align:left;
+  padding:14px;
+  color:#94a3b8;
+  background:#020617;
+  font-size:12px;
+}
+
+td{
+  padding:14px;
+  border-top:1px solid rgba(255,255,255,0.06);
+  font-size:14px;
+}
+
+tr:hover{
+  background:#111827;
+}
+
+.good{
+  color:#22c55e;
+  font-weight:800;
+}
+
+@media(max-width:950px){
+
+  .charts{
+    grid-template-columns:1fr;
+  }
+
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+  <div class="topbar">
+
+    <div>
+
+      <div class="title">
+        Ossus Stability Command Center
+      </div>
+
+      <div class="subtitle">
+        Adaptive hydrogen production monitoring under changing influent quality
+      </div>
+
+    </div>
+
+    <div class="sync" id="syncStatus">
+      Connecting...
+    </div>
+
+  </div>
+
+  <!-- HERO -->
+
+  <div class="hero">
+
+    <div class="hero-title">
+      Production Stability Status
+    </div>
+
+    <div class="hero-status" id="heroText">
+      Monitoring operating mode effectiveness and hydrogen stability across timepoints.
+    </div>
+
+  </div>
+
+  <!-- KPI -->
+
+  <div class="kpis">
+
+    <div class="kpi">
+      <div class="kpi-label">
+        Current Stability
+      </div>
+
+      <div class="kpi-value green" id="stability">
+        Stable
+      </div>
+    </div>
+
+    <div class="kpi">
+      <div class="kpi-label">
+        Avg H₂ Production
+      </div>
+
+      <div class="kpi-value cyan" id="avgH2">
+        0 L
+      </div>
+    </div>
+
+    <div class="kpi">
+      <div class="kpi-label">
+        Best Operating Mode
+      </div>
+
+      <div class="kpi-value orange" id="bestMode">
+        —
+      </div>
+    </div>
+
+    <div class="kpi">
+      <div class="kpi-label">
+        Active Timepoint
+      </div>
+
+      <div class="kpi-value purple" id="activeTP">
+        T0
+      </div>
+    </div>
+
+  </div>
+
+  <!-- TIMELINE -->
+
+  <div class="section">
+
+    <div class="section-title">
+      Timepoint Stability Timeline
+    </div>
+
+    <div class="timeline" id="timeline"></div>
+
+  </div>
+
+  <!-- FORM -->
+
+  <div class="section">
+
+    <div class="section-title">
+      Log Production Timepoint
+    </div>
+
+    <div class="form-grid">
+
+      <div class="form-group">
+        <label>Date</label>
+        <input type="date" id="date">
+      </div>
+
+      <div class="form-group">
+        <label>Site</label>
+        <select id="site" onchange="updateModes()">
+          <option value="Sayaji">Sayaji</option>
+          <option value="Eternis">Eternis</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label>Reactor</label>
+        <input type="text" id="reactor" placeholder="T20A">
+      </div>
+
+      <div class="form-group">
+        <label>Day Number</label>
+        <input type="number" id="day">
+      </div>
+
+      <div class="form-group">
+        <label>Timepoint</label>
+        <select id="timepoint"></select>
+      </div>
+
+      <div class="form-group">
+        <label>Operating Mode</label>
+        <select id="mode"></select>
+      </div>
+
+      <div class="form-group">
+        <label>Voltage (V)</label>
+        <input type="number" step="0.01" id="voltage">
+      </div>
+
+      <div class="form-group">
+        <label>Current (A)</label>
+        <input type="number" step="0.01" id="current">
+      </div>
+
+      <div class="form-group">
+        <label>H₂ Production (L)</label>
+        <input type="number" step="0.01" id="h2">
+      </div>
+
+      <div class="form-group">
+        <label>CO₂ Production (L)</label>
+        <input type="number" step="0.01" id="co2">
+      </div>
+
+      <div class="form-group">
+        <label>H₂ %</label>
+        <input type="number" step="0.01" id="h2pct">
+      </div>
+
+      <div class="form-group">
+        <label>pH</label>
+        <input type="number" step="0.01" id="ph">
+      </div>
+
+      <div class="form-group">
+        <label>Conductivity</label>
+        <input type="number" step="0.01" id="cond">
+      </div>
+
+    </div>
+
+    <button onclick="saveData()">
+      Save Timepoint
+    </button>
+
+  </div>
+
+  <!-- CHARTS -->
+
+  <div class="charts">
+
+    <div class="chart-card">
+
+      <div class="chart-title">
+        H₂ Stability Across Timepoints
+      </div>
+
+      <canvas id="h2Chart"></canvas>
+
+    </div>
+
+    <div class="chart-card">
+
+      <div class="chart-title">
+        Operating Mode Performance
+      </div>
+
+      <canvas id="modeChart"></canvas>
+
+    </div>
+
+  </div>
+
+  <!-- MODES -->
+
+  <div class="section">
+
+    <div class="section-title">
+      Operating Mode Intelligence
+    </div>
+
+    <div class="mode-grid" id="modeGrid"></div>
+
+  </div>
+
+  <!-- TABLE -->
+
+  <div class="section">
+
+    <div class="section-title">
+      Production Timeline
+    </div>
+
+    <table>
+
+      <thead>
+
+        <tr>
+          <th>Run ID</th>
+          <th>TP</th>
+          <th>Mode</th>
+          <th>H₂</th>
+          <th>CO₂</th>
+          <th>pH</th>
+          <th>Cond</th>
+        </tr>
+
+      </thead>
+
+      <tbody id="tableBody"></tbody>
+
+    </table>
+
+  </div>
+
+</div>
+
+<script>
+
+const SCRIPT_URL =
+"https://script.google.com/macros/s/AKfycbyLOQ5tyhPvY0ngIlBvf5QZYNjAyCLY_Q4Agbn6YUD_tris9qsRBW3ock68MptqZgz1MQ/exec";
+
+const modes = {
+
+  Sayaji:[
+    "CSL",
+    "CSL Yeast Fermented",
+    "CSL Yeast Fermentation pH Adjusted"
+  ],
+
+  Eternis:[
+    "Raw LTDS",
+    "Strain Specific LTDS"
+  ]
+
+};
+
+let allData = [];
+
+document.getElementById("date").value =
+new Date().toISOString().split("T")[0];
+
+for(let i=0;i<=48;i++){
+
+  document.getElementById("timepoint").innerHTML +=
+  `<option>T${i}</option>`;
+
+}
+
+function updateModes(){
+
+  const site =
+  document.getElementById("site").value;
+
+  const mode =
+  document.getElementById("mode");
+
+  mode.innerHTML = "";
+
+  modes[site].forEach(m => {
+
+    mode.innerHTML +=
+    `<option>${m}</option>`;
+
+  });
+
+}
+
+updateModes();
+
+async function loadData(){
+
+  try{
+
+    const response =
+    await fetch(SCRIPT_URL);
+
+    allData =
+    await response.json();
+
+    renderDashboard();
+
+    document.getElementById("syncStatus").innerHTML =
+    "✅ Google Sheets Connected";
+
+  }catch(err){
+
+    document.getElementById("syncStatus").innerHTML =
+    "❌ Connection Failed";
+
+  }
+
+}
+
+async function saveData(){
+
+  const date =
+  document.getElementById("date").value;
+
+  const day =
+  document.getElementById("day").value;
+
+  const reactor =
+  document.getElementById("reactor").value;
+
+  const runId =
+  `${date}_D${day}_${reactor}`;
+
+  const payload = {
+
+    runid: runId,
+    date: date,
+    site: document.getElementById("site").value,
+    reactor: reactor,
+    day: day,
+    timepoint: document.getElementById("timepoint").value,
+    mode: document.getElementById("mode").value,
+    voltage: document.getElementById("voltage").value,
+    current: document.getElementById("current").value,
+    h2: document.getElementById("h2").value,
+    co2: document.getElementById("co2").value,
+    h2pct: document.getElementById("h2pct").value,
+    ph: document.getElementById("ph").value,
+    cond: document.getElementById("cond").value
+
+  };
+
+  await fetch(SCRIPT_URL, {
+
+    method:"POST",
+    body:JSON.stringify(payload)
+
+  });
+
+  alert("Timepoint Saved");
+
+  loadData();
+
+}
+
+function renderDashboard(){
+
+  renderKPIs();
+  renderTimeline();
+  renderCharts();
+  renderModes();
+  renderTable();
+
+}
+
+function renderKPIs(){
+
+  if(allData.length===0) return;
+
+  const latest =
+  allData[allData.length - 1];
+
+  document.getElementById("activeTP").innerHTML =
+  latest.timepoint || "T0";
+
+  const avg =
+  allData.reduce((a,b)=>
+    a + Number(b.h2 || 0),0
+  ) / allData.length;
+
+  document.getElementById("avgH2").innerHTML =
+  avg.toFixed(1) + " L";
+
+  const modeAgg = {};
+
+  allData.forEach(d => {
+
+    if(!modeAgg[d.mode])
+      modeAgg[d.mode] = [];
+
+    modeAgg[d.mode].push(Number(d.h2 || 0));
+
+  });
+
+  let bestMode = "";
+  let bestAvg = 0;
+
+  Object.keys(modeAgg).forEach(mode => {
+
+    const arr = modeAgg[mode];
+
+    const avg =
+    arr.reduce((a,b)=>a+b,0)
+    / arr.length;
+
+    if(avg > bestAvg){
+
+      bestAvg = avg;
+      bestMode = mode;
+
+    }
+
+  });
+
+  document.getElementById("bestMode").innerHTML =
+  bestMode || "—";
+
+  const variance =
+  Math.abs(avg - Number(latest.h2 || 0));
+
+  if(variance < 10){
+
+    document.getElementById("stability").innerHTML =
+    "Stable";
+
+    document.getElementById("heroText").innerHTML =
+    "Hydrogen production remains stable across recent timepoints despite upstream influent variability.";
+
+  }else{
+
+    document.getElementById("stability").innerHTML =
+    "Drifting";
+
+    document.getElementById("heroText").innerHTML =
+    "Production variability detected. Review operating mode adaptation and influent changes.";
+
+  }
+
+}
+
+function tpNum(tp){
+
+  return Number(
+    String(tp).replace("T","")
+  );
+
+}
+
+function renderTimeline(){
+
+  const wrap =
+  document.getElementById("timeline");
+
+  wrap.innerHTML = "";
+
+  const sorted =
+  [...allData].sort((a,b)=>
+    tpNum(a.timepoint) -
+    tpNum(b.timepoint)
+  );
+
+  sorted.slice(-12).forEach(d => {
+
+    const stable =
+    Number(d.h2 || 0) > 50;
+
+    wrap.innerHTML += `
+
+      <div class="tp ${stable ? 'stable':'warn'}">
+
+        <div class="tp-label">
+          ${d.timepoint}
+        </div>
+
+        <div class="tp-value">
+          ${d.h2 || '-'}
+        </div>
+
+      </div>
+
+    `;
+
+  });
+
+}
+
+let h2Chart;
+let modeChart;
+
+function renderCharts(){
+
+  const sorted =
+  [...allData].sort((a,b)=>
+    tpNum(a.timepoint) -
+    tpNum(b.timepoint)
+  );
+
+  const labels =
+  sorted.map(d => d.timepoint);
+
+  const h2 =
+  sorted.map(d => Number(d.h2));
+
+  if(h2Chart)
+    h2Chart.destroy();
+
+  h2Chart = new Chart(
+
+    document.getElementById("h2Chart"),
+
+    {
+
+      type:"line",
+
+      data:{
+
+        labels,
+
+        datasets:[{
+
+          label:"H₂ Production",
+
+          data:h2,
+
+          borderWidth:4,
+
+          tension:0.35,
+
+          fill:true
+
+        }]
+
+      },
+
+      options:{
+
+        plugins:{
+          legend:{
+            labels:{
+              color:"white"
+            }
+          }
+        },
+
+        scales:{
+
+          x:{
+            ticks:{
+              color:"#94a3b8"
+            }
+          },
+
+          y:{
+            ticks:{
+              color:"#94a3b8"
+            }
+          }
+
+        }
+
+      }
+
+    }
+
+  );
+
+  const modeAgg = {};
+
+  allData.forEach(d => {
+
+    if(!modeAgg[d.mode])
+      modeAgg[d.mode] = [];
+
+    modeAgg[d.mode].push(
+      Number(d.h2 || 0)
+    );
+
+  });
+
+  const labels2 =
+  Object.keys(modeAgg);
+
+  const values2 =
+  labels2.map(m => {
+
+    const arr = modeAgg[m];
+
+    return arr.reduce((a,b)=>a+b,0)
+    / arr.length;
+
+  });
+
+  if(modeChart)
+    modeChart.destroy();
+
+  modeChart = new Chart(
+
+    document.getElementById("modeChart"),
+
+    {
+
+      type:"bar",
+
+      data:{
+
+        labels:labels2,
+
+        datasets:[{
+
+          label:"Avg H₂ Production",
+
+          data:values2
+
+        }]
+
+      },
+
+      options:{
+
+        plugins:{
+          legend:{
+            labels:{
+              color:"white"
+            }
+          }
+        },
+
+        scales:{
+
+          x:{
+            ticks:{
+              color:"#94a3b8"
+            }
+          },
+
+          y:{
+            ticks:{
+              color:"#94a3b8"
+            }
+          }
+
+        }
+
+      }
+
+    }
+
+  );
+
+}
+
+function renderModes(){
+
+  const grid =
+  document.getElementById("modeGrid");
+
+  grid.innerHTML = "";
+
+  const grouped = {};
+
+  allData.forEach(d => {
+
+    if(!grouped[d.mode])
+      grouped[d.mode] = [];
+
+    grouped[d.mode].push(Number(d.h2 || 0));
+
+  });
+
+  Object.keys(grouped).forEach(mode => {
+
+    const arr =
+    grouped[mode];
+
+    const avg =
+    arr.reduce((a,b)=>a+b,0)
+    / arr.length;
+
+    grid.innerHTML += `
+
+      <div class="mode-card">
+
+        <div class="mode-name">
+          ${mode}
+        </div>
+
+        <div class="mode-stat">
+          ${avg.toFixed(1)} L
+        </div>
+
+      </div>
+
+    `;
+
+  });
+
+}
+
+function renderTable(){
+
+  const tbody =
+  document.getElementById("tableBody");
+
+  tbody.innerHTML = "";
+
+  [...allData].reverse().forEach(d => {
+
+    tbody.innerHTML += `
+
+      <tr>
+
+        <td>${d.runid || "-"}</td>
+        <td>${d.timepoint || "-"}</td>
+        <td>${d.mode || "-"}</td>
+        <td class="good">${d.h2 || "-"}</td>
+        <td>${d.co2 || "-"}</td>
+        <td>${d.ph || "-"}</td>
+        <td>${d.cond || "-"}</td>
+
+      </tr>
+
+    `;
+
+  });
+
+}
+
+loadData();
+
+</script>
+
+</body>
+</html>
