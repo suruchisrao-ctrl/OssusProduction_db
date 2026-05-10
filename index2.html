@@ -550,10 +550,18 @@ let allData = [];
 document.getElementById("date").value =
 new Date().toISOString().split("T")[0];
 
-for(let i=0;i<=48;i++){
+const tpSelect =
+document.getElementById("timepoint");
 
-  document.getElementById("timepoint").innerHTML +=
-  `<option>T${i}</option>`;
+for(let i = 0; i <= 48; i++){
+
+  const option =
+  document.createElement("option");
+
+  option.value = `T${i}`;
+  option.textContent = `T${i}`;
+
+  tpSelect.appendChild(option);
 
 }
 
